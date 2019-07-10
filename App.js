@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import { StyleSheet, Text, Image, View, ToastAndroid, Button, TextInput, AsyncStorage } from 'react-native';
-import {createAppContainer, createBottomTabNavigator} from 'react-navigation';
+import {createAppContainer, createStackNavigator, createBottomTabNavigator} from 'react-navigation';
 
 
 
@@ -15,14 +15,38 @@ const NotYoursNavigator = createBottomTabNavigator( {
         screen: About,
         title: "About"
 
-      }
+      },
+      
+
 
     },
-    {navigationOptions:{
+    {
       initialRouteName : "About"
-    } }
+    } 
 
 );
+
+function Shop(props){
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: 'lightblue', 
+      alignItems: 'center',
+      justifyContent: 'center',
+    }
+  });
+  
+  const {navigation} = props;
+
+  return (
+    <View style={styles.container}>
+    
+    <Button onPress={()=>{navigation.navigate('Home')}} title="Press to go" />
+    <Text> This is shop</Text>
+
+    </View>
+  )
+}
 
 
 function About(){
@@ -44,7 +68,7 @@ function About(){
   )
 }
 
- function App() {
+ function App(props) {
   
   const [value, setValue] = useState('');
 
@@ -62,11 +86,13 @@ function About(){
 
   }
 
+  const {navigation} = props;
+
   return (
     <View style={styles.container}>
       <Text>Open up App.js to start working on your app!</Text>
       <View style={styles.input}><TextInput value={value} onChangeText={ (text)=>{setValue(text)} } placeholderTextColor="red" placeholder="type here"/></View>
-      <Button title="hello" onPress={()=>{showMessage(value)}}/>
+      <Button title="hello" onPress={()=>{navigation.navigate('Shop')}}/>
     </View>
   );
 }
@@ -85,5 +111,5 @@ const styles = StyleSheet.create({
   }
 });
 
-export default createAppContainer(NotYoursNavigator);
+export default createAppContainer(   createStackNavigator({tabs : NotYoursNavigator, Shop: Shop })  );
 
